@@ -38,14 +38,16 @@ namespace QuickAnki
             var noteType = new AnkiNoteType(
                 name: "Basic",
                 cardTypes: new[] {
-        new AnkiCardType(
-            Name: "Card 1",
-            Ordinal: 0,
-            QuestionFormat: "{{Front}}",
-            AnswerFormat: "{{Front}}<hr id=\"answer\">{{Back}}"
-        )
+                    new AnkiCardType(
+                        Name: "Card 1",
+                        Ordinal: 0,
+                        QuestionFormat: "{{Front}}",
+                        AnswerFormat: "{{Front}}<hr id=\"answer\">{{Back}}"
+
+                    )
                 },
-                fieldNames: new[] { "Front", "Back" }
+                fieldNames: new[] { "Front", "Back" },
+                css: ".card {font-family: arial;font-size: 20px;text-align: center;color: black;background-color: white;}"
             );
 
 
@@ -58,6 +60,11 @@ namespace QuickAnki
                 collection.CreateNote(deckId, noteTypeId, x.Front, x.Back);
             });
             return collection;
+        }
+
+        public static string RemoveFirstAndLastCharacter(this string input)
+        {
+            return input.Substring(1, input.Length - 2);
         }
     }
 
