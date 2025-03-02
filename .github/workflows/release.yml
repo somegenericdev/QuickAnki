@@ -8,7 +8,7 @@ env:
   DOTNETVERSION: "8.0.x"
   APP: "QuickAnki"
   SOLUTION: "./QuickAnki.sln"
-  BUILDOUTPUTPATH: "./QuickAnki/QuickAnki/bin/Release/linux-x64/publish"
+  BUILDOUTPUTPATH: "bin/Release/linux-x64/publish"
 #  PACKOUTPUTPATH: "./out"
 
 jobs:
