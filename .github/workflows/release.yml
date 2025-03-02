@@ -7,10 +7,10 @@ on:
 env:
   DOTNETVERSION: "8.0.x"
   APP: "QuickAnki"
-  SOLUTION: "./QuickAnki.sln"
-  BUILDOUTPUTPATH_LINUX: "/home/runner/work/QuickAnki/QuickAnki/QuickAnki/bin/Release/net8.0/linux-x64/publish"
-  BUILDOUTPUTPATH_WIN: "/home/runner/work/QuickAnki/QuickAnki/QuickAnki/bin/Release/net8.0/win-x64/publish"
-  BUILDOUTPUTPATH_OSX: "/home/runner/work/QuickAnki/QuickAnki/QuickAnki/bin/Release/net8.0/osx-x64/publish"
+  SOLUTION: "QuickAnki.sln"
+  BUILDOUTPUTPATH_LINUX: "QuickAnki/QuickAnki/bin/Release/net8.0/linux-x64/publish"
+  BUILDOUTPUTPATH_WIN: "QuickAnki/QuickAnki/bin/Release/net8.0/win-x64/publish"
+  BUILDOUTPUTPATH_OSX: "QuickAnki/QuickAnki/bin/Release/net8.0/osx-x64/publish"
 
 jobs:
   build:
