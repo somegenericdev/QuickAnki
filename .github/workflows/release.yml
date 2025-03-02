@@ -10,7 +10,7 @@ env:
   SOLUTION: "./QuickAnki.sln"
   BUILDOUTPUTPATH_LINUX: "/home/runner/work/QuickAnki/QuickAnki/QuickAnki/bin/Release/net8.0/linux-x64/publish"
   BUILDOUTPUTPATH_WIN: "/home/runner/work/QuickAnki/QuickAnki/QuickAnki/bin/Release/net8.0/win-x64/publish"
-#  PACKOUTPUTPATH: "./out"
+  BUILDOUTPUTPATH_OSX: "/home/runner/work/QuickAnki/QuickAnki/QuickAnki/bin/Release/net8.0/osx-x64/publish"
 
 jobs:
   build:
@@ -44,7 +44,10 @@ jobs:
       - name: Build Windows
         run: dotnet publish ${{ env.SOLUTION }} -r win-x64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=None -p:DebugSymbols=false --self-contained  
 
-#      - name: Upload app build artifact Linux
+      - name: Build OSX
+        run: dotnet publish ${{ env.SOLUTION }} -r osx-x64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=None -p:DebugSymbols=false --self-contained
+          
+          #      - name: Upload app build artifact Linux
 #        uses: actions/upload-artifact@v4
 #        with:
 #          name: ${{ env.APP }}-${{ steps.version.outputs.version-without-v }}
@@ -73,6 +76,9 @@ jobs:
 
       - name: ZIP release artifact Windows
         run: echo $(pwd); echo $(find . -type d); cd ${{ env.BUILDOUTPUTPATH_WIN }}; zip -r ../${{ env.APP }}-${{ steps.version.outputs.version-without-v }}-win64.zip ./
+      
+      - name: ZIP release artifact OSX
+        run: echo $(pwd); echo $(find . -type d); cd ${{ env.BUILDOUTPUTPATH_OSX }}; zip -r ../${{ env.APP }}-${{ steps.version.outputs.version-without-v }}-osx64.zip ./
 
       - name: GitHub release assets Linux
         uses: actions/upload-release-asset@v1
@@ -94,4 +100,15 @@ jobs:
           upload_url: ${{ steps.release.outputs.upload_url }}
           asset_path: ${{ env.BUILDOUTPUTPATH_WIN }}/../${{ env.APP }}-${{ steps.version.outputs.version-without-v }}-win64.zip
           asset_name: ${{ env.APP }}-${{ steps.version.outputs.version-without-v }}-win64.zip
+          asset_content_type: application/zip
+
+      - name: GitHub release assets OSX
+        uses: actions/upload-release-asset@v1
+        id: release_assets_3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.release.outputs.upload_url }}
+          asset_path: ${{ env.BUILDOUTPUTPATH_OSX }}/../${{ env.APP }}-${{ steps.version.outputs.version-without-v }}-osx64.zip
+          asset_name: ${{ env.APP }}-${{ steps.version.outputs.version-without-v }}-osx64.zip
           asset_content_type: application/zip
