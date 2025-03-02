@@ -55,7 +55,7 @@ jobs:
         with:
           release_name: ${{ steps.version.outputs.version }}
           tag_name: ${{ github.ref }}
-          body: ${{ env.LOG }}
+          body: ''
           draft: false
           prerelease: false
 
