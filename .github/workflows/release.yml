@@ -62,7 +62,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          release_name: ${{ steps.version.outputs.version-without-v }}
+          release_name: ${{ steps.version.outputs.version }}
           tag_name: ${{ github.ref }}
           body: ${{ env.LOG }}
           draft: false
@@ -92,6 +92,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.release.outputs.upload_url }}
-          asset_path: ${{ env.BUILDOUTPUTPATH_LINUX }}/../${{ env.APP }}-${{ steps.version.outputs.version-without-v }}-win64.zip
+          asset_path: ${{ env.BUILDOUTPUTPATH_WIN }}/../${{ env.APP }}-${{ steps.version.outputs.version-without-v }}-win64.zip
           asset_name: ${{ env.APP }}-${{ steps.version.outputs.version-without-v }}.zip
           asset_content_type: application/zip
