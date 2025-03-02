@@ -82,7 +82,7 @@ jobs:
         with:
           upload_url: ${{ steps.release.outputs.upload_url }}
           asset_path: ${{ env.BUILDOUTPUTPATH_LINUX }}/../${{ env.APP }}-${{ steps.version.outputs.version-without-v }}-linux64.zip
-          asset_name: ${{ env.APP }}-${{ steps.version.outputs.version-without-v }}.zip
+          asset_name: ${{ env.APP }}-${{ steps.version.outputs.version-without-v }}-linux64.zip
           asset_content_type: application/zip
       
       - name: GitHub release assets Windows
@@ -93,5 +93,5 @@ jobs:
         with:
           upload_url: ${{ steps.release.outputs.upload_url }}
           asset_path: ${{ env.BUILDOUTPUTPATH_WIN }}/../${{ env.APP }}-${{ steps.version.outputs.version-without-v }}-win64.zip
-          asset_name: ${{ env.APP }}-${{ steps.version.outputs.version-without-v }}.zip
+          asset_name: ${{ env.APP }}-${{ steps.version.outputs.version-without-v }}-win64.zip
           asset_content_type: application/zip
