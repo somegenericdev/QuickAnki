@@ -6,7 +6,7 @@ on:
 
 env:
   DOTNETVERSION: "8.0.x"
-  APP: "QuickAnki"
+  APP_NAME: "QuickAnki"
   SOLUTION: "QuickAnki.sln"
   BUILDOUTPUTPATH_LINUX: "QuickAnki/bin/Release/net8.0/linux-x64/publish"
   BUILDOUTPUTPATH_WIN: "QuickAnki/bin/Release/net8.0/win-x64/publish"
@@ -56,13 +56,13 @@ jobs:
           prerelease: false
 
       - name: ZIP release artifact Linux
-        run: echo $(pwd); echo $(find . -type d); cd ${{ env.BUILDOUTPUTPATH_LINUX }}; zip -r ../${{ env.APP }}-${{ steps.version.outputs.version }}-linux64.zip ./
+        run: echo $(pwd); echo $(find . -type d); cd ${{ env.BUILDOUTPUTPATH_LINUX }}; zip -r ../${{ env.APP_NAME }}-${{ steps.version.outputs.version }}-linux64.zip ./
 
       - name: ZIP release artifact Windows
-        run: echo $(pwd); echo $(find . -type d); cd ${{ env.BUILDOUTPUTPATH_WIN }}; zip -r ../${{ env.APP }}-${{ steps.version.outputs.version }}-win64.zip ./
+        run: echo $(pwd); echo $(find . -type d); cd ${{ env.BUILDOUTPUTPATH_WIN }}; zip -r ../${{ env.APP_NAME }}-${{ steps.version.outputs.version }}-win64.zip ./
       
       - name: ZIP release artifact OSX
-        run: echo $(pwd); echo $(find . -type d); cd ${{ env.BUILDOUTPUTPATH_OSX }}; zip -r ../${{ env.APP }}-${{ steps.version.outputs.version }}-osx64.zip ./
+        run: echo $(pwd); echo $(find . -type d); cd ${{ env.BUILDOUTPUTPATH_OSX }}; zip -r ../${{ env.APP_NAME }}-${{ steps.version.outputs.version }}-osx64.zip ./
 
       - name: GitHub release assets Linux
         uses: actions/upload-release-asset@v1
@@ -71,8 +71,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.release.outputs.upload_url }}
-          asset_path: ${{ env.BUILDOUTPUTPATH_LINUX }}/../${{ env.APP }}-${{ steps.version.outputs.version }}-linux64.zip
-          asset_name: ${{ env.APP }}-${{ steps.version.outputs.version }}-linux64.zip
+          asset_path: ${{ env.BUILDOUTPUTPATH_LINUX }}/../${{ env.APP_NAME }}-${{ steps.version.outputs.version }}-linux64.zip
+          asset_name: ${{ env.APP_NAME }}-${{ steps.version.outputs.version }}-linux64.zip
           asset_content_type: application/zip
       
       - name: GitHub release assets Windows
@@ -82,8 +82,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.release.outputs.upload_url }}
-          asset_path: ${{ env.BUILDOUTPUTPATH_WIN }}/../${{ env.APP }}-${{ steps.version.outputs.version }}-win64.zip
-          asset_name: ${{ env.APP }}-${{ steps.version.outputs.version }}-win64.zip
+          asset_path: ${{ env.BUILDOUTPUTPATH_WIN }}/../${{ env.APP_NAME }}-${{ steps.version.outputs.version }}-win64.zip
+          asset_name: ${{ env.APP_NAME }}-${{ steps.version.outputs.version }}-win64.zip
           asset_content_type: application/zip
 
       - name: GitHub release assets OSX
@@ -93,6 +93,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.release.outputs.upload_url }}
-          asset_path: ${{ env.BUILDOUTPUTPATH_OSX }}/../${{ env.APP }}-${{ steps.version.outputs.version }}-osx64.zip
-          asset_name: ${{ env.APP }}-${{ steps.version.outputs.version }}-osx64.zip
+          asset_path: ${{ env.BUILDOUTPUTPATH_OSX }}/../${{ env.APP_NAME }}-${{ steps.version.outputs.version }}-osx64.zip
+          asset_name: ${{ env.APP_NAME }}-${{ steps.version.outputs.version }}-osx64.zip
           asset_content_type: application/zip
