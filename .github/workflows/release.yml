@@ -87,7 +87,7 @@ jobs:
       
       - name: GitHub release assets Windows
         uses: actions/upload-release-asset@v1
-        id: release_assets
+        id: release_assets_2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
