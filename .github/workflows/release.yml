@@ -75,7 +75,7 @@ jobs:
           prerelease: false
 
       - name: ZIP release artifact
-        run: echo $(pwd); cd ${{ env.BUILDOUTPUTPATH }}; zip -r ../${{ env.APP }}-${{ steps.version.outputs.version-without-v }}.zip ./
+        run: echo $(pwd); echo $(find . -type d); cd ${{ env.BUILDOUTPUTPATH }}; zip -r ../${{ env.APP }}-${{ steps.version.outputs.version-without-v }}.zip ./
 
       - name: GitHub release assets
         uses: actions/upload-release-asset@v1
