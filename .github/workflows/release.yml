@@ -8,7 +8,8 @@ env:
   DOTNETVERSION: "8.0.x"
   APP: "QuickAnki"
   SOLUTION: "./QuickAnki.sln"
-  BUILDOUTPUTPATH: "/home/runner/work/QuickAnki/QuickAnki/QuickAnki/bin/Release/net8.0/linux-x64/publish"
+  BUILDOUTPUTPATH_LINUX: "/home/runner/work/QuickAnki/QuickAnki/QuickAnki/bin/Release/net8.0/linux-x64/publish"
+  BUILDOUTPUTPATH_WIN: "/home/runner/work/QuickAnki/QuickAnki/QuickAnki/bin/Release/net8.0/win-x64/publish"
 #  PACKOUTPUTPATH: "./out"
 
 jobs:
@@ -37,31 +38,24 @@ jobs:
       - name: Install dependencies
         run: dotnet restore ${{ env.SOLUTION }}
 
-      - name: Build
+      - name: Build Linux
         run: dotnet publish ${{ env.SOLUTION }} -r linux-x64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=None -p:DebugSymbols=false --self-contained
 
-      #- name: Test
-      #  run: dotnet test ${{ env.SOLUTION }} --no-restore --verbosity normal --logger trx --results-directory "TestResults"
+      - name: Build Windows
+        run: dotnet publish ${{ env.SOLUTION }} -r win-x64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=None -p:DebugSymbols=false --self-contained  
 
-      - name: Upload app build artifact
+      - name: Upload app build artifact Linux
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.APP }}-${{ steps.version.outputs.version-without-v }}
-          path: ${{ env.BUILDOUTPUTPATH }}
-
-      #- name: Upload TestResults build artifact
-      #  uses: actions/upload-artifact@v2
-      #  with:
-      #    name: TestResults
-      #    path: TestResults
-
-      #- name: Build changelog
-      #  id: gitLog
-      #  uses: jarrodparkes/git-log-action@1.0.0
-      #  with:
-      #    start: ${{ steps.previousTag.outputs.tag }}
-      #    end: ${{ github.ref }}
-
+          path: ${{ env.BUILDOUTPUTPATH_LINUX }}
+          
+      - name: Upload app build artifact Windows
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.APP }}-${{ steps.version.outputs.version-without-v }}
+          path: ${{ env.BUILDOUTPUTPATH_WIN }}    
+          
       - name: GitHub release
         uses: actions/create-release@v1
         id: release
@@ -74,28 +68,30 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: ZIP release artifact
-        run: echo $(pwd); echo $(find . -type d); cd ${{ env.BUILDOUTPUTPATH }}; zip -r ../${{ env.APP }}-${{ steps.version.outputs.version-without-v }}.zip ./
+      - name: ZIP release artifact Linux
+        run: echo $(pwd); echo $(find . -type d); cd ${{ env.BUILDOUTPUTPATH_LINUX }}; zip -r ../${{ env.APP }}-${{ steps.version.outputs.version-without-v }}-linux64.zip ./
 
-      - name: GitHub release assets
+      - name: ZIP release artifact Windows
+        run: echo $(pwd); echo $(find . -type d); cd ${{ env.BUILDOUTPUTPATH_WIN }}; zip -r ../${{ env.APP }}-${{ steps.version.outputs.version-without-v }}-win64.zip ./
+
+      - name: GitHub release assets Linux
         uses: actions/upload-release-asset@v1
         id: release_assets
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.release.outputs.upload_url }}
-          asset_path: ${{ env.BUILDOUTPUTPATH }}/../${{ env.APP }}-${{ steps.version.outputs.version-without-v }}.zip
+          asset_path: ${{ env.BUILDOUTPUTPATH_LINUX }}/../${{ env.APP }}-${{ steps.version.outputs.version-without-v }}-linux64.zip
           asset_name: ${{ env.APP }}-${{ steps.version.outputs.version-without-v }}.zip
           asset_content_type: application/zip
-
-      #- name: NuGet pack
-      #  run: dotnet pack ${{ env.SOLUTION }} --configuration Release --no-restore --include-symbols /p:Version=${{ steps.version.outputs.version-without-v }} -o ${{ env.PACKOUTPUTPATH }}
-
-      #- name: Upload NuGet build artifact
-      #  uses: actions/upload-artifact@v2
-      #  with:
-      #    name: ${{ env.APP }} NuGet Packages
-      #    path: ${{ env.PACKOUTPUTPATH }}
-
-      #- name: NuGet push
-      #  run: dotnet nuget push "./${{ env.PACKOUTPUTPATH }}/*.nupkg" --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_TOKEN }}
+      
+      - name: GitHub release assets Windows
+        uses: actions/upload-release-asset@v1
+        id: release_assets
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.release.outputs.upload_url }}
+          asset_path: ${{ env.BUILDOUTPUTPATH_LINUX }}/../${{ env.APP }}-${{ steps.version.outputs.version-without-v }}-win64.zip
+          asset_name: ${{ env.APP }}-${{ steps.version.outputs.version-without-v }}.zip
+          asset_content_type: application/zip
