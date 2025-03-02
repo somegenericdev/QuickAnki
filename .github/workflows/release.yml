@@ -44,17 +44,17 @@ jobs:
       - name: Build Windows
         run: dotnet publish ${{ env.SOLUTION }} -r win-x64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=None -p:DebugSymbols=false --self-contained  
 
-      - name: Upload app build artifact Linux
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.APP }}-${{ steps.version.outputs.version-without-v }}
-          path: ${{ env.BUILDOUTPUTPATH_LINUX }}
-          
-      - name: Upload app build artifact Windows
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.APP }}-${{ steps.version.outputs.version-without-v }}
-          path: ${{ env.BUILDOUTPUTPATH_WIN }}    
+#      - name: Upload app build artifact Linux
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: ${{ env.APP }}-${{ steps.version.outputs.version-without-v }}
+#          path: ${{ env.BUILDOUTPUTPATH_LINUX }}
+#          
+#      - name: Upload app build artifact Windows
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: ${{ env.APP }}-${{ steps.version.outputs.version-without-v }}
+#          path: ${{ env.BUILDOUTPUTPATH_WIN }}    
           
       - name: GitHub release
         uses: actions/create-release@v1
