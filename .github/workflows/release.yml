@@ -38,7 +38,7 @@ jobs:
         run: dotnet restore ${{ env.SOLUTION }}
 
       - name: Build
-        run: dotnet publish ${{ env.SOLUTION }} -r linux-x64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true --self-contained
+        run: dotnet publish ${{ env.SOLUTION }} -r linux-x64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=None -p:DebugSymbols=false --self-contained
 
       #- name: Test
       #  run: dotnet test ${{ env.SOLUTION }} --no-restore --verbosity normal --logger trx --results-directory "TestResults"
