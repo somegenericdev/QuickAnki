@@ -11,11 +11,8 @@ Parser.Default.ParseArguments<CommandLineOptions>(args)
     .WithParsed(async o =>
     {
 
-        //var filePath = o.Input;
-        //var deckName = o.DeckName;
-        var filePath = "C:\\Users\\USERNAME\\Desktop\\test.txt";
-        var deckName = "test2";
-
+        var filePath = o.Input;
+        var deckName = o.DeckName;
 
         var tmpFilePath = Path.GetTempFileName();
 
