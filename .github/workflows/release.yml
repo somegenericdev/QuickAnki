@@ -46,19 +46,7 @@ jobs:
 
       - name: Build OSX
         run: dotnet publish ${{ env.SOLUTION }} -r osx-x64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=None -p:DebugSymbols=false --self-contained
-          
-          #      - name: Upload app build artifact Linux
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: ${{ env.APP }}-${{ steps.version.outputs.version-without-v }}
-#          path: ${{ env.BUILDOUTPUTPATH_LINUX }}
-#          
-#      - name: Upload app build artifact Windows
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: ${{ env.APP }}-${{ steps.version.outputs.version-without-v }}
-#          path: ${{ env.BUILDOUTPUTPATH_WIN }}    
-          
+                    
       - name: GitHub release
         uses: actions/create-release@v1
         id: release
@@ -72,13 +60,13 @@ jobs:
           prerelease: false
 
       - name: ZIP release artifact Linux
-        run: echo $(pwd); echo $(find . -type d); cd ${{ env.BUILDOUTPUTPATH_LINUX }}; zip -r ../${{ env.APP }}-${{ steps.version.outputs.version-without-v }}-linux64.zip ./
+        run: echo $(pwd); echo $(find . -type d); cd ${{ env.BUILDOUTPUTPATH_LINUX }}; zip -r ../${{ env.APP }}-${{ steps.version.outputs.version }}-linux64.zip ./
 
       - name: ZIP release artifact Windows
-        run: echo $(pwd); echo $(find . -type d); cd ${{ env.BUILDOUTPUTPATH_WIN }}; zip -r ../${{ env.APP }}-${{ steps.version.outputs.version-without-v }}-win64.zip ./
+        run: echo $(pwd); echo $(find . -type d); cd ${{ env.BUILDOUTPUTPATH_WIN }}; zip -r ../${{ env.APP }}-${{ steps.version.outputs.version }}-win64.zip ./
       
       - name: ZIP release artifact OSX
-        run: echo $(pwd); echo $(find . -type d); cd ${{ env.BUILDOUTPUTPATH_OSX }}; zip -r ../${{ env.APP }}-${{ steps.version.outputs.version-without-v }}-osx64.zip ./
+        run: echo $(pwd); echo $(find . -type d); cd ${{ env.BUILDOUTPUTPATH_OSX }}; zip -r ../${{ env.APP }}-${{ steps.version.outputs.version }}-osx64.zip ./
 
       - name: GitHub release assets Linux
         uses: actions/upload-release-asset@v1
@@ -87,8 +75,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.release.outputs.upload_url }}
-          asset_path: ${{ env.BUILDOUTPUTPATH_LINUX }}/../${{ env.APP }}-${{ steps.version.outputs.version-without-v }}-linux64.zip
-          asset_name: ${{ env.APP }}-${{ steps.version.outputs.version-without-v }}-linux64.zip
+          asset_path: ${{ env.BUILDOUTPUTPATH_LINUX }}/../${{ env.APP }}-${{ steps.version.outputs.version }}-linux64.zip
+          asset_name: ${{ env.APP }}-${{ steps.version.outputs.version }}-linux64.zip
           asset_content_type: application/zip
       
       - name: GitHub release assets Windows
@@ -98,8 +86,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.release.outputs.upload_url }}
-          asset_path: ${{ env.BUILDOUTPUTPATH_WIN }}/../${{ env.APP }}-${{ steps.version.outputs.version-without-v }}-win64.zip
-          asset_name: ${{ env.APP }}-${{ steps.version.outputs.version-without-v }}-win64.zip
+          asset_path: ${{ env.BUILDOUTPUTPATH_WIN }}/../${{ env.APP }}-${{ steps.version.outputs.version }}-win64.zip
+          asset_name: ${{ env.APP }}-${{ steps.version.outputs.version }}-win64.zip
           asset_content_type: application/zip
 
       - name: GitHub release assets OSX
@@ -109,6 +97,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.release.outputs.upload_url }}
-          asset_path: ${{ env.BUILDOUTPUTPATH_OSX }}/../${{ env.APP }}-${{ steps.version.outputs.version-without-v }}-osx64.zip
-          asset_name: ${{ env.APP }}-${{ steps.version.outputs.version-without-v }}-osx64.zip
+          asset_path: ${{ env.BUILDOUTPUTPATH_OSX }}/../${{ env.APP }}-${{ steps.version.outputs.version }}-osx64.zip
+          asset_name: ${{ env.APP }}-${{ steps.version.outputs.version }}-osx64.zip
           asset_content_type: application/zip
